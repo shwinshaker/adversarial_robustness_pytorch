@@ -1,7 +1,7 @@
 from .base import Attack
 
-from .apgd import LinfAPGDAttack
-from .apgd import L2APGDAttack
+# from .apgd import LinfAPGDAttack
+# from .apgd import L2APGDAttack
 
 from .fgsm import FGMAttack
 from .fgsm import FGSMAttack
@@ -12,9 +12,9 @@ from .pgd import PGDAttack
 from .pgd import L2PGDAttack
 from .pgd import LinfPGDAttack
 
-from .deepfool import DeepFoolAttack
-from .deepfool import LinfDeepFoolAttack
-from .deepfool import L2DeepFoolAttack
+# from .deepfool import DeepFoolAttack
+# from .deepfool import LinfDeepFoolAttack
+# from .deepfool import L2DeepFoolAttack
 
 from .utils import CWLoss
 
