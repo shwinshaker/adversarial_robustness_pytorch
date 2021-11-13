@@ -46,7 +46,7 @@ def get_data_info(data_dir):
 
 
 def load_data(data_dir, batch_size=256, batch_size_test=256, num_workers=4, use_augmentation=False, shuffle_train=True, 
-              aux_data_filename=None, unsup_fraction=None, validation=False):
+              aux_data_filename=None, aux_take_ids_path=None, unsup_fraction=None, validation=False):
     """
     Returns train, test datasets and dataloaders.
     Arguments:
@@ -62,11 +62,15 @@ def load_data(data_dir, batch_size=256, batch_size_test=256, num_workers=4, use_
     """
     dataset = os.path.basename(os.path.normpath(data_dir))
     load_dataset_fn = _LOAD_DATASET_FN[dataset]
+
+    print(aux_data_filename)
     
     if validation:
         assert dataset in SEMISUP_DATASETS, 'Only semi-supervised datasets allow a validation set.'
         train_dataset, test_dataset, val_dataset = load_dataset_fn(data_dir=data_dir, use_augmentation=use_augmentation, 
-                                                                   aux_data_filename=aux_data_filename, validation=True)
+                                                                   aux_data_filename=aux_data_filename,
+                                                                   aux_take_ids_path=aux_take_ids_path,
+                                                                   validation=True)
     else:
         train_dataset, test_dataset = load_dataset_fn(data_dir=data_dir, use_augmentation=use_augmentation)
        

@@ -17,6 +17,7 @@ def get_semisup_dataloaders(train_dataset, test_dataset, val_dataset=None, batch
 
     kwargs = {'num_workers': num_workers, 'pin_memory': torch.cuda.is_available() }    
     train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_sampler=train_batch_sampler, **kwargs)
+    print('Train loader size: %i '% len(train_dataloader))
     test_dataloader = torch.utils.data.DataLoader(test_dataset, batch_size=batch_size_test, shuffle=False, **kwargs)
     
     if val_dataset:
@@ -29,7 +30,8 @@ class SemiSupervisedDataset(torch.utils.data.Dataset):
     """
     A dataset with auxiliary pseudo-labeled data.
     """
-    def __init__(self, base_dataset='cifar10', take_amount=None, take_amount_seed=13, aux_data_filename=None, 
+    def __init__(self, base_dataset='cifar10', take_amount=None, take_amount_seed=13, 
+                 aux_data_filename=None, aux_take_ids_path=None,
                  add_aux_labels=False, aux_take_amount=None, train=False, validation=False, **kwargs):
 
         self.base_dataset = base_dataset
@@ -77,6 +79,12 @@ class SemiSupervisedDataset(torch.utils.data.Dataset):
                     take_inds = np.random.choice(len(aux_data), aux_take_amount, replace=False)
                     np.random.set_state(rng_state)
 
+                    aux_data = aux_data[take_inds]
+                    aux_targets = aux_targets[take_inds]
+
+                if aux_take_ids_path is not None:
+                    take_inds = np.load(aux_take_ids_path)
+                    print('Size of selected aux data subset: %i' % len(take_inds))
                     aux_data = aux_data[take_inds]
                     aux_targets = aux_targets[take_inds]
 
@@ -134,6 +142,9 @@ class SemiSupervisedSampler(torch.utils.data.Sampler):
         self.batch_size = batch_size
         unsup_batch_size = int(batch_size * unsup_fraction)
         self.sup_batch_size = batch_size - unsup_batch_size
+
+        print('Total base examples: %i  - base batch size: %i' % (len(self.sup_inds), self.sup_batch_size))
+        print('Total extra examples: %i  - extra batch size: %i' % (len(self.unsup_inds), unsup_batch_size))
 
         if num_batches is not None:
             self.num_batches = num_batches

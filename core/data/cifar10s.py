@@ -12,6 +12,7 @@ from .semisup import SemiSupervisedSampler
 
 def load_cifar10s(data_dir, use_augmentation=False, aux_take_amount=None, 
                   aux_data_filename='/cluster/scratch/rarade/cifar10s/ti_500K_pseudo_labeled.pickle', 
+                  aux_take_ids_path=None,
                   validation=False):
     """
     Returns semisupervised CIFAR10 train, test datasets and dataloaders (with Tiny Images).
@@ -33,7 +34,8 @@ def load_cifar10s(data_dir, use_augmentation=False, aux_take_amount=None,
     
     train_dataset = SemiSupervisedCIFAR10(base_dataset='cifar10', root=data_dir, train=True, download=True, 
                                           transform=train_transform, aux_data_filename=aux_data_filename, 
-                                          add_aux_labels=True, aux_take_amount=aux_take_amount, validation=validation)
+                                          add_aux_labels=True, aux_take_amount=aux_take_amount, aux_take_ids_path=aux_take_ids_path,
+                                          validation=validation)
     test_dataset = SemiSupervisedCIFAR10(base_dataset='cifar10', root=data_dir, train=False, download=True, 
                                          transform=test_transform)
     if validation:

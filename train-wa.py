@@ -53,6 +53,7 @@ BATCH_SIZE_VALIDATION = args.batch_size_validation
 NUM_ADV_EPOCHS = args.num_adv_epochs
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 logger.log('Using device: {}'.format(device))
+
 if args.debug:
     NUM_ADV_EPOCHS = 1
 
@@ -66,7 +67,8 @@ torch.backends.cudnn.benchmark = True
 seed(args.seed)
 train_dataset, test_dataset, eval_dataset, train_dataloader, test_dataloader, eval_dataloader = load_data(
     DATA_DIR, BATCH_SIZE, BATCH_SIZE_VALIDATION, use_augmentation=args.augment, shuffle_train=True, 
-    aux_data_filename=args.aux_data_filename, unsup_fraction=args.unsup_fraction, validation=True
+    aux_data_filename=args.aux_data_filename, aux_take_ids_path=args.aux_take_ids_path,
+    unsup_fraction=args.unsup_fraction, validation=True
 )
 del train_dataset, test_dataset, eval_dataset
 

@@ -52,7 +52,9 @@ def parser_train():
     
     parser.add_argument('--unsup-fraction', type=float, default=0.7, help='Ratio of unlabelled data to labelled data.')
     parser.add_argument('--aux-data-filename', type=str, help='Path to additional Tiny Images data.', 
-                        default='/cluster/scratch/rarade/cifar10s/ti_500K_pseudo_labeled.pickle')
+                        default=None) # '/cluster/scratch/rarade/cifar10s/ti_500K_pseudo_labeled.pickle')
+    parser.add_argument('--aux-take-ids-path', type=str, help='Path to selected indices of additional data', 
+                        default=None) # '/cluster/scratch/rarade/cifar10s/ti_500K_pseudo_labeled.pickle')
     
     parser.add_argument('--seed', type=int, default=1, help='Random seed.')
     return parser
