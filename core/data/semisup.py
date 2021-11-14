@@ -84,6 +84,7 @@ class SemiSupervisedDataset(torch.utils.data.Dataset):
 
                 if aux_take_ids_path is not None:
                     take_inds = np.load(aux_take_ids_path)
+                    print('Path of selected aux data subset: %s' % aux_take_ids_path)
                     print('Size of selected aux data subset: %i' % len(take_inds))
                     aux_data = aux_data[take_inds]
                     aux_targets = aux_targets[take_inds]
