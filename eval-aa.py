@@ -31,13 +31,13 @@ from core.utils import seed
 parse = parser_eval()
 args = parse.parse_args()
 
-LOG_DIR = args.log_dir + args.desc
+LOG_DIR = os.path.join(args.log_dir, args.desc)
+# load previous args
 with open(LOG_DIR+'/args.txt', 'r') as f:
     old = json.load(f)
-    args.__dict__ = dict(vars(args), **old)
+    args.__dict__ = dict(old, **vars(args))
 
-DATA_DIR = args.data_dir + args.data + '/'
-LOG_DIR = args.log_dir + args.desc
+DATA_DIR = os.path.join(args.data_dir, args.data)
 WEIGHTS = LOG_DIR + '/weights-best.pt'
 
 log_path = LOG_DIR + '/log-aa.log'
@@ -51,9 +51,7 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 logger.log('Using device: {}'.format(device))
 
 
-
 # Load data
-
 seed(args.seed)
 _, _, train_dataloader, test_dataloader = load_data(DATA_DIR, BATCH_SIZE, BATCH_SIZE_VALIDATION, use_augmentation=False, 
                                                     shuffle_train=False)
