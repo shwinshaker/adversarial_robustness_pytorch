@@ -72,6 +72,8 @@ def parser_eval():
     parser.add_argument('--desc', type=str, required=True, help='Description of model to be evaluated.')
     parser.add_argument('--num-samples', type=int, default=1000, help='Number of test samples.')
     
+    parser.add_argument('-d', '--data', type=str, default='cifar10s', choices=DATASETS, help='Data to use.')
+
     # eval-aa.py
     parser.add_argument('--train', action='store_true', default=False, help='Evaluate on training set.')
     parser.add_argument('-v', '--version', type=str, default='standard', choices=['custom', 'plus', 'standard'], 
